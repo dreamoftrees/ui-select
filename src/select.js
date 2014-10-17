@@ -578,8 +578,8 @@
   }])
 
   .directive('uiSelect',
-    ['$document', 'uiSelectConfig', 'uiSelectMinErr', '$compile', '$parse',
-    function($document, uiSelectConfig, uiSelectMinErr, $compile, $parse) {
+    ['$document', 'uiSelectConfig', 'uiSelectMinErr', '$compile', '$parse', '$log', '$timeout',
+    function($document, uiSelectConfig, uiSelectMinErr, $compile, $parse, $log, $timeout) {
 
     return {
       restrict: 'EA',
@@ -694,6 +694,20 @@
 
         $compile(focusser)(scope);
         $select.focusser = focusser;
+
+        // Support for focus on the directive
+        element.bind("focus", function() {
+           $log.debug('foxus on select2');
+
+            $timeout(function(){
+                focusser.prop('disabled', false);
+                focusser[0].focus();
+            },0,false);
+        });
+
+        element.bind("blur", function() {
+            $log.debug('blur on select2');
+        });
 
         if (!$select.multiple){
 

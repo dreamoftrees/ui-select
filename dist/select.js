@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.8.3 - 2014-10-14T18:22:05.432Z
+ * Version: 0.8.3 - 2014-10-17T21:41:44.400Z
  * License: MIT
  */
 
@@ -586,8 +586,8 @@
   }])
 
   .directive('uiSelect',
-    ['$document', 'uiSelectConfig', 'uiSelectMinErr', '$compile', '$parse',
-    function($document, uiSelectConfig, uiSelectMinErr, $compile, $parse) {
+    ['$document', 'uiSelectConfig', 'uiSelectMinErr', '$compile', '$parse', '$log', '$timeout',
+    function($document, uiSelectConfig, uiSelectMinErr, $compile, $parse, $log, $timeout) {
 
     return {
       restrict: 'EA',
@@ -702,6 +702,20 @@
 
         $compile(focusser)(scope);
         $select.focusser = focusser;
+
+        // Support for focus on the directive
+        element.bind("focus", function() {
+           $log.debug('foxus on select2');
+
+            $timeout(function(){
+                focusser.prop('disabled', false);
+                focusser[0].focus();
+            },0,false);
+        });
+
+        element.bind("blur", function() {
+            $log.debug('blur on select2');
+        });
 
         if (!$select.multiple){
 
