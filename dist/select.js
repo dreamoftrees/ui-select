@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.8.3 - 2014-10-18T00:43:11.957Z
+ * Version: 0.8.3 - 2014-10-18T00:58:17.301Z
  * License: MIT
  */
 
@@ -145,8 +145,8 @@
    * put as much logic in the controller (instead of the link functions) as possible so it can be easily tested.
    */
   .controller('uiSelectCtrl',
-    ['$scope', '$element', '$timeout', 'RepeatParser', 'uiSelectMinErr', '$log',
-    function($scope, $element, $timeout, RepeatParser, uiSelectMinErr, $log) {
+    ['$scope', '$element', '$timeout', 'RepeatParser', 'uiSelectMinErr',
+    function($scope, $element, $timeout, RepeatParser, uiSelectMinErr) {
 
     var ctrl = this;
 
@@ -173,12 +173,13 @@
     };
 
     var _searchInput = $element.querySelectorAll('input.ui-select-search');
-    _searchInput.attr('name', 'customer');
-    $log.debug('Setting name: '+$element.attr('ng-name'));
-
     if (_searchInput.length !== 1) {
       throw uiSelectMinErr('searchInput', "Expected 1 input.ui-select-search but got '{0}'.", _searchInput.length);
     }
+
+    // Support for input name
+    var inputName = $element.attr('ng-name');
+    if(inputName) _searchInput.attr('name', inputName);
 
     // Most of the time the user does not want to empty the search input when in typeahead mode
     function _resetSearchInput() {
@@ -589,8 +590,8 @@
   }])
 
   .directive('uiSelect',
-    ['$document', 'uiSelectConfig', 'uiSelectMinErr', '$compile', '$parse', '$log', '$timeout',
-    function($document, uiSelectConfig, uiSelectMinErr, $compile, $parse, $log, $timeout) {
+    ['$document', 'uiSelectConfig', 'uiSelectMinErr', '$compile', '$parse',
+    function($document, uiSelectConfig, uiSelectMinErr, $compile, $parse) {
 
     return {
       restrict: 'EA',
@@ -705,20 +706,6 @@
 
         $compile(focusser)(scope);
         $select.focusser = focusser;
-
-        // Support for focus on the directive
-        element.bind("focus", function() {
-           $log.debug('foxus on select2');
-
-            $timeout(function(){
-                focusser.prop('disabled', false);
-                focusser[0].focus();
-            },0,false);
-        });
-
-        element.bind("blur", function() {
-            $log.debug('blur on select2');
-        });
 
         if (!$select.multiple){
 
