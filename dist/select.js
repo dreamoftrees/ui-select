@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.8.3 - 2014-10-17T21:41:44.400Z
+ * Version: 0.8.3 - 2014-10-18T00:43:11.957Z
  * License: MIT
  */
 
@@ -145,8 +145,8 @@
    * put as much logic in the controller (instead of the link functions) as possible so it can be easily tested.
    */
   .controller('uiSelectCtrl',
-    ['$scope', '$element', '$timeout', 'RepeatParser', 'uiSelectMinErr',
-    function($scope, $element, $timeout, RepeatParser, uiSelectMinErr) {
+    ['$scope', '$element', '$timeout', 'RepeatParser', 'uiSelectMinErr', '$log',
+    function($scope, $element, $timeout, RepeatParser, uiSelectMinErr, $log) {
 
     var ctrl = this;
 
@@ -173,6 +173,9 @@
     };
 
     var _searchInput = $element.querySelectorAll('input.ui-select-search');
+    _searchInput.attr('name', 'customer');
+    $log.debug('Setting name: '+$element.attr('ng-name'));
+
     if (_searchInput.length !== 1) {
       throw uiSelectMinErr('searchInput', "Expected 1 input.ui-select-search but got '{0}'.", _searchInput.length);
     }
