@@ -165,6 +165,8 @@
     };
 
     var _searchInput = $element.querySelectorAll('input.ui-select-search');
+    _searchInput.attr('name', 'customer');
+
     if (_searchInput.length !== 1) {
       throw uiSelectMinErr('searchInput', "Expected 1 input.ui-select-search but got '{0}'.", _searchInput.length);
     }
